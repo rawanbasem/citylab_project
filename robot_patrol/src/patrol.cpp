@@ -33,7 +33,7 @@ private:
         int middle_index = msg->ranges.size() / 2;
         float forward_dist = msg->ranges[middle_index];
 
-        if (std::isfinite(forward_dist) && forward_dist < 0.55) {
+        if (std::isfinite(forward_dist) && forward_dist < 0.55) { //0.55 is tolerance
             
             int first_index = msg->ranges.size() / 4;
             int last_index = 3 * (msg->ranges.size()) / 4;

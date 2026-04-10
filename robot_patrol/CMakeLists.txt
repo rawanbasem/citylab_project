@@ -32,6 +32,7 @@ install(TARGETS
 # Install the launch directory
 install(DIRECTORY
   launch
+  rviz
   DESTINATION share/${PROJECT_NAME}/
 )
 
