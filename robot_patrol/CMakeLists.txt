@@ -39,10 +39,21 @@ rosidl_target_interfaces(direction_service_node
   ${PROJECT_NAME} "rosidl_typesupport_cpp"
 )
 
+add_executable(test_service_node src/test_service.cpp)
+ament_target_dependencies(test_service_node
+  rclcpp
+  sensor_msgs
+)
+# Link the custom GetDirection.srv to the test node too!
+rosidl_target_interfaces(test_service_node
+  ${PROJECT_NAME} "rosidl_typesupport_cpp"
+)
+
 # Install all executables
 install(TARGETS
   patrol_node
   direction_service_node
+  test_service_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -48,6 +48,7 @@ private:
                     total_dist_sec_left += request->laser_data.ranges[i];
                 }
             }
+            RCLCPP_INFO(this->get_logger(), "Totals -> Right: %f | Front: %f | Left: %f", total_dist_sec_right, total_dist_sec_front, total_dist_sec_left);
         }
 
         if (total_dist_sec_right > total_dist_sec_front && total_dist_sec_right > total_dist_sec_left) {
