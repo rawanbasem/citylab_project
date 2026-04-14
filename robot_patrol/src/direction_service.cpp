@@ -20,7 +20,9 @@ private:
     void service_callback(
       const std::shared_ptr<robot_patrol::srv::GetDirection::Request> request,
       std::shared_ptr<robot_patrol::srv::GetDirection::Response> response) {
-      
+
+        RCLCPP_INFO(this->get_logger(), "Service Requested");
+
         double total_dist_sec_right = 0.0;
         double total_dist_sec_front = 0.0;
         double total_dist_sec_left = 0.0;
@@ -48,7 +50,7 @@ private:
                     total_dist_sec_left += request->laser_data.ranges[i];
                 }
             }
-            RCLCPP_INFO(this->get_logger(), "Totals -> Right: %f | Front: %f | Left: %f", total_dist_sec_right, total_dist_sec_front, total_dist_sec_left);
+            // RCLCPP_INFO(this->get_logger(), "Totals -> Right: %f | Front: %f | Left: %f", total_dist_sec_right, total_dist_sec_front, total_dist_sec_left);
         }
 
         if (total_dist_sec_right > total_dist_sec_front && total_dist_sec_right > total_dist_sec_left) {
@@ -60,6 +62,7 @@ private:
         else if (total_dist_sec_left > total_dist_sec_right && total_dist_sec_left > total_dist_sec_front) {
             response->direction = "left";
         }
+        RCLCPP_INFO(this->get_logger(), "Service Completed");
     }
 
 };
