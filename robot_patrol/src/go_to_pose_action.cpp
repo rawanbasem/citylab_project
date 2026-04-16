@@ -36,9 +36,9 @@ public:
             std::bind(&GoToPose::handle_accepted, this, _1));
 
         odom_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
-            "/fastbot_1/odom", 10, std::bind(&GoToPose::odom_callback, this, _1));
+            "/odom", 10, std::bind(&GoToPose::odom_callback, this, _1));
 
-        vel_publisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/fastbot_1/cmd_vel", 10);
+        vel_publisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
 
         RCLCPP_INFO(this->get_logger(), "Action Server Ready");
     }
