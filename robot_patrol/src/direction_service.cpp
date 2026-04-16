@@ -21,6 +21,16 @@ private:
       const std::shared_ptr<robot_patrol::srv::GetDirection::Request> request,
       std::shared_ptr<robot_patrol::srv::GetDirection::Response> response) {
 
+        // Rotate array 180 degrees for real robot
+        int size = request->laser_data.ranges.size();
+        int half_size = size / 2;
+        std::vector<float> rotated_ranges(size);
+        
+        for (int i = 0; i < size; i++) {
+            rotated_ranges[i] = request->laser_data.ranges[(i + half_size) % size];
+        }
+        request->laser_data.ranges = rotated_ranges;
+        
         RCLCPP_INFO(this->get_logger(), "Service Requested");
 
         double total_dist_sec_right = 0.0;
@@ -35,7 +45,7 @@ private:
         int front_end = first_index + (2 * chunk_size);
 
         for (int i = first_index; i <= last_index; i++) {
-            // Master safety check
+            //  safety check
             if (std::isfinite(request->laser_data.ranges[i])) {
             
                 // Sort into buckets
@@ -45,8 +55,7 @@ private:
                 else if (i < front_end) {
                     total_dist_sec_front += request->laser_data.ranges[i];
                 }
-                else {
-                    // Everything else automatically falls into the Left bucket!
+                else { //left
                     total_dist_sec_left += request->laser_data.ranges[i];
                 }
             }

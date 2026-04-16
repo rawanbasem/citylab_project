@@ -11,10 +11,10 @@ public:
   PatrolWithService() : Node("patrol_with_service_node") {
 
     publisher_ = this->create_publisher<geometry_msgs::msg::Twist>(
-        "/fastbot_1/cmd_vel", 10);
+        "/cmd_vel", 10);
 
     laser_subscriber_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
-        "/fastbot_1/scan", 10,
+        "/scan", 10,
         std::bind(&PatrolWithService::laserscan_callback, this,
                   std::placeholders::_1));
 
@@ -33,8 +33,7 @@ public:
 
 private:
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publisher_;
-  rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr
-      laser_subscriber_;
+  rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr laser_subscriber_;
   rclcpp::Client<robot_patrol::srv::GetDirection>::SharedPtr client_;
   rclcpp::TimerBase::SharedPtr timer_;
 
@@ -42,17 +41,29 @@ private:
 
   void laserscan_callback(const sensor_msgs::msg::LaserScan::SharedPtr msg) {
 
-    int middle_index = msg->ranges.size() / 2;
-    float forward_dist = msg->ranges[middle_index];
+    int size = msg->ranges.size();
+    bool obstacle_in_front = false;
+        
+    // Check the front-left 
+    for (int i = 0; i < 10; i++) {
+        if (std::isfinite(msg->ranges[i]) && msg->ranges[i] < 0.55) {
+            obstacle_in_front = true;
+        }
+    }
+    // Check the front-right 
+    for (int i = size - 10; i < size; i++) {
+        if (std::isfinite(msg->ranges[i]) && msg->ranges[i] < 0.55) {
+            obstacle_in_front = true;
+        }
+    }
 
-    // If obstacle is closer than 55cm:
-    if (std::isfinite(forward_dist) && forward_dist < 0.55) {
+    // If obstacle is close:
+    if (obstacle_in_front) {
 
       auto request =
           std::make_shared<robot_patrol::srv::GetDirection::Request>();
       request->laser_data = *msg;
 
-      // Sending request asynchronously
       client_->async_send_request(
           request,
           [this](rclcpp::Client<robot_patrol::srv::GetDirection>::SharedFuture future) {

@@ -23,7 +23,7 @@ public:
         RCLCPP_INFO(this->get_logger(), "Service Client Ready! Listening to laser...");
 
         laser_subscriber_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
-            "/fastbot_1/scan", 10, std::bind(&TestService::laserscan_callback, this, std::placeholders::_1));
+            "/scan", 10, std::bind(&TestService::laserscan_callback, this, std::placeholders::_1));
     }
 
 private:

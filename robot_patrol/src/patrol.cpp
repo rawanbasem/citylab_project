@@ -10,14 +10,11 @@ class Patrol : public rclcpp::Node {
 public:
     Patrol() : Node("robot_patrol_node") {
         
-        // Subscribing to the simulation's laser scan topic
         laser_subscriber_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
             "/scan", 10, std::bind(&Patrol::laserscan_callback, this, std::placeholders::_1));
 
-        // Publishing to the simulation's velocity topic
         publisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
 
-        // 10 Hz control loop
         timer_ = this->create_wall_timer(100ms, std::bind(&Patrol::timer_callback, this));
         
         RCLCPP_INFO(this->get_logger(), "Robot Patrol Node started...");
