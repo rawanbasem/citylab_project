@@ -33,8 +33,7 @@ public:
 
 private:
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publisher_;
-  rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr
-      laser_subscriber_;
+  rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr laser_subscriber_;
   rclcpp::Client<robot_patrol::srv::GetDirection>::SharedPtr client_;
   rclcpp::TimerBase::SharedPtr timer_;
 
