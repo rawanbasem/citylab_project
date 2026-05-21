@@ -5,6 +5,9 @@
 
 An autonomous robotic navigation and patrolling system developed in **ROS2 Humble (C++)**. This project demonstrates the design of custom ROS2 interfaces, synchronous obstacle avoidance services, and a custom, preemptive asynchronous Action Server for precise 2D pose navigation. The software architecture was validated in a Gazebo simulation and successfully deployed onto a physical **FastBot** differential-drive mobile robot.
 
+## 🎥 Demonstration
+![Robot Patrol in Action](citylab%20Proj%20demo.gif)
+
 ## 🛠️ Tech Stack & Key Concepts
 
 * **Framework:** ROS2 Humble Utilities (`rclcpp`, `rclcpp_action`)
